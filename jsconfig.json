@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "baseUrl": "./src",
+    "jsx": "react",
+    "paths": {
+      "actions": ["./state/actions"],
+      "assets": ["./assets"],
+      "components": ["./components"],
+      "constants": ["./constants"],
+      "containers": ["./containers"],
+      "reducers": ["./state/reducers"],
+      "services": ["./services"],
+      "sources": ["./sources"],
+      "styles": ["./styles"],
+      "utils": ["./utils"]
+    }
+  },
+  "exclude": [
+      "node_modules", "build"
+  ]
+}
