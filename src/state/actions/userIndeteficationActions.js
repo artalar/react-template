@@ -1,5 +1,5 @@
 import { createAction } from 'redux-act';
-import { createAsyncAction } from 'services/redux-act-dispatch-free';
+import { createAsyncAction } from 'redux-act-dispatch-free';
 
 import api from 'sources/api';
 

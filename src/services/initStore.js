@@ -6,7 +6,7 @@ import logger from 'redux-logger'
 import { save, load } from 'redux-localstorage-simple';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import { asyncActionsCallerMiddleware } from 'services/redux-act-dispatch-free';
+import { asyncActionsCallerMiddleware } from 'redux-act-dispatch-free';
 
 import actions from 'actions';
 
