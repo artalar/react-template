@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+import { network } from 'services';
+import { ROOT_API_URL } from 'constants/urls';
+
 export default {
   registerUser(email, password) {
     const formData = new FormData();
@@ -7,7 +10,7 @@ export default {
     formData.append('password', password);
     return axios({
       method: 'POST',
-      url: '/registration',
+      url: `${ROOT_API_URL}/registration`,
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       data: formData,
     });
@@ -18,15 +21,10 @@ export default {
     formData.append('password', password);
     return axios({
       method: 'POST',
-      url: '/authentification',
+      url: `${ROOT_API_URL}/authentification`,
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       data: formData,
     });
   },
-  getUserData() {
-    return axios({
-      method: 'GET',
-      url: '/me',
-    });
-  },
+  getUserData: () => network(`${ROOT_API_URL}/me`),
 };

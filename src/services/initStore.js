@@ -1,22 +1,31 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
-import { assignAll } from 'redux-act';
 import { routerMiddleware, routerReducer } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
-import logger from 'redux-logger'
-import { save, load } from 'redux-localstorage-simple';
+import { createBrowserHistory } from 'history';
+import { assignAll } from 'redux-act';
+import { createLogger } from 'redux-logger';
+import { asyncActionsCallerMiddleware } from 'redux-act-dispatch-free';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import { asyncActionsCallerMiddleware } from 'redux-act-dispatch-free';
+import * as actions from 'actions';
+import applicationReducers from 'reducers';
 
-import actions from 'actions';
-
-export default applicationReducers => {
+export default () => {
   const reducers = combineReducers({ app: applicationReducers, router: routerReducer });
-  const history = createHistory();
+  const history = createBrowserHistory();
+  const logger = createLogger({
+    collapsed: true,
+  });
+
+  const middleware = applyMiddleware(
+    asyncActionsCallerMiddleware,
+    routerMiddleware(history),
+    process.env.NODE_ENV === 'development' ? logger : undefined
+  );
+
   const store = createStore(
     reducers,
-    { ...load(), router: undefined }, // preloadedState
-    composeWithDevTools(applyMiddleware(asyncActionsCallerMiddleware, logger, save(), routerMiddleware(history)))
+    {}, // preloadedState
+    process.env.NODE_ENV === 'development' ? composeWithDevTools(middleware) : middleware
   );
   assignAll(actions, store);
   return { history, store };

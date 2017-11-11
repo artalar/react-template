@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router';
 
-import actions from 'actions';
+import { fetchGetUserData } from 'actions';
 
 import Authorization from 'containers/Authorization';
 import Registration from 'containers/Registration';
@@ -11,30 +11,28 @@ import Sidebar from 'containers/Sidebar';
 import Main from 'containers/Main';
 
 class App extends React.Component {
+  static propTypes = { apiKey: PropTypes.string.isRequired };
+
   componentDidMount = () => {
-    if (this.props.apiKey !== null) {
-      actions.fetchUserData();
-    }
+    if (this.props.apiKey) fetchGetUserData();
   };
 
   render() {
-    const { apiKey, userLoaded } = this.props;
-
-    if (this.props.apiKey !== null && userLoaded === false) return <div />;
+    const { apiKey } = this.props;
 
     if (apiKey) {
       return (
-        <div id="wrapper">
+        <div>
           <Sidebar />
           <Main />
         </div>
       );
     } else {
       return (
-        <div id="wrapper">
+        <div>
           <Switch>
-            <Route exact path="/authorization" component={Authorization} />
-            <Route exact path="/registration" component={Registration} />
+            <Route path="/authorization" component={Authorization} />
+            <Route path="/registration" component={Registration} />
             <Redirect to="/authorization" />
           </Switch>
         </div>
@@ -46,10 +44,7 @@ class App extends React.Component {
 App.propTypes = { apiKey: PropTypes.string, userLoaded: PropTypes.bool };
 
 const mapStateToprops = state => ({
-  apiKey: state.app.user.apiKey,
-  userLoaded: state.app.user.loaded,
-  // FIXME: for rerender, when location change
-  url: state.router.location.pathname,
+  apiKey: state.app.apiKey,
 });
 
 export default connect(mapStateToprops)(App);
