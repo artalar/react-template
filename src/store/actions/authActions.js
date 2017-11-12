@@ -5,7 +5,7 @@ import { api } from 'sources';
 
 export const errorAuthentification = createAsyncAction(
   'Server not accept auth',
-  store => async () => store.dispatch(push('/auth'))
+  store => () => store.dispatch(push('/registration'))
 );
 
 //#region register user
@@ -25,12 +25,5 @@ export const [
   errorUserAuthorization,
 ] = createAsyncCycle('authorize user', store => (email, password) =>
   api.authorizeUser(email, password)
-);
-//#endregion
-
-//#region get user data
-export const [fetchGetUserData, successGetUserData, errorGetUserData] = createAsyncCycle(
-  'get user data',
-  store => () => api.getUserData()
 );
 //#endregion

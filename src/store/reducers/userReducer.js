@@ -9,7 +9,7 @@ import {
   fetchGetUserData,
   successGetUserData,
   errorGetUserData,
-} from 'actions/userIndeteficationActions';
+} from 'actions';
 
 const initialState = {
   loading: false,
@@ -35,7 +35,7 @@ const errorData = (state, error) => ({
   error,
 });
 
-const userIndeteficationReducer = createReducer(
+const userReducer = createReducer(
   {
     [fetchUserRegistration]: fetchData,
     [successUserRegistration]: successData,
@@ -50,4 +50,4 @@ const userIndeteficationReducer = createReducer(
   initialState
 );
 
-export default userIndeteficationReducer;
+export default userReducer;

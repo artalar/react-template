@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-import apiKeyReducer from './apiKeyReducer';
-import userIndeteficationReducer from './userIndeteficationReducer';
+import authReducer from './authReducer';
+import userReducer from './userReducer';
 
 export default combineReducers({
-  apiKey: apiKeyReducer,
-  user: userIndeteficationReducer,
+  auth: authReducer,
+  user: userReducer,
 });

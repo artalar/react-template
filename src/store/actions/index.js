@@ -1,1 +1,2 @@
-export * from './userIndeteficationActions';
+export * from './authActions';
+export * from './userActions';
