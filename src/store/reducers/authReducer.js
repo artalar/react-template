@@ -8,16 +8,16 @@ import {
   errorAuthentification,
 } from 'actions';
 
-const { loadPlain: load, savePlain: save } = sessionStorageBackUP('session');
+const { loadPlain: load, savePlain: save } = sessionStorageBackUP('auth');
 
 const initialState = load() || '';
 
 const sessionReducer = createReducer(
   {
-    [successUserRegistration]: (state, session) => save(session),
-    [successUserAuthorization]: (state, session) => save(session),
-    [errorGetUserData]: (state, session) => save(''),
-    [errorAuthentification]: (state, session) => save(''),
+    [successUserRegistration]: (state, data) => save(data.token),
+    [successUserAuthorization]: (state, data) => save(data.token),
+    [errorGetUserData]: state => save(''),
+    [errorAuthentification]: state => save(''),
   },
   initialState
 );

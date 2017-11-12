@@ -11,16 +11,16 @@ import Sidebar from 'containers/Sidebar';
 import Main from 'containers/Main';
 
 class App extends React.Component {
-  static propTypes = { apiKey: PropTypes.string.isRequired };
+  static propTypes = { auth: PropTypes.string.isRequired };
 
   componentDidMount = () => {
-    if (this.props.apiKey) fetchGetUserData();
+    if (this.props.auth) fetchGetUserData();
   };
 
   render() {
-    const { apiKey } = this.props;
+    const { auth } = this.props;
 
-    if (apiKey) {
+    if (auth) {
       return (
         <div>
           <Sidebar />
@@ -41,10 +41,10 @@ class App extends React.Component {
   }
 }
 
-App.propTypes = { apiKey: PropTypes.string, userLoaded: PropTypes.bool };
+App.propTypes = { auth: PropTypes.string, userLoaded: PropTypes.bool };
 
 const mapStateToprops = state => ({
-  apiKey: state.app.apiKey,
+  auth: state.app.auth,
 });
 
 export default connect(mapStateToprops)(App);
