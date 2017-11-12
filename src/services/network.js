@@ -9,14 +9,14 @@ const network = axios.create({
 
 network.interceptors.request.use(config => {
   const apiKey = localStorage.getItem('apiKey');
-  config.headers.Authorization = `Token ${apiKey}`
+  config.headers.Authorization = `Token ${apiKey}`;
   return config;
 });
 
 network.interceptors.response.use(undefined, error => {
   const resp = error.response;
-  if (resp.status === 401) errorAuthentification(error.response);
-  return error;
+  if (resp.status === 401) setTimeout(() => errorAuthentification(error.response));
+  return Promise.reject(error);
 });
 
 export default network;
