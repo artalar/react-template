@@ -1,4 +1,3 @@
-import { push } from 'react-router-redux';
 import { createAsyncCycle } from 'redux-act-dispatch-free';
 
 import { api } from 'sources';
