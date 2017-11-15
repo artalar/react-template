@@ -8,8 +8,8 @@ const network = axios.create({
 });
 
 network.interceptors.request.use(config => {
-  const session = sessionStorage.getItem('session');
-  config.headers.Authorization = `Token ${session}`;
+  const auth = sessionStorage.getItem('auth');
+  config.headers.Authorization = `Token ${auth}`;
   return config;
 });
 
