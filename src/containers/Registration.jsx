@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+import { RoundedButton } from 'components';
 import { fetchUserRegistration } from 'actions';
+
+const RegButton = RoundedButton.extend`
+  margin: 10px;
+  background-color: ${({theme}) => theme.colors.primary.replace('1)', '0.7)'/*add transparent*/)};
+`;
 
 class Registration extends React.Component {
   static propTypes = { className: PropTypes.string.isRequired };
@@ -42,9 +48,9 @@ class Registration extends React.Component {
             type="password"
             value={passwordRepeat}
           />
-          <button type="submit" name="submit">
+          <RegButton type="submit" name="submit">
             register
-          </button>
+          </RegButton>
           <Link to="/authorization">
             <span>authorization</span>
           </Link>
