@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { RoundedButton } from 'components';
+import { DashedButton } from 'components';
 import { fetchUserRegistration } from 'actions';
 
-const RegButton = RoundedButton.extend`
+const RegButton = DashedButton.extend`
   margin: 10px;
   background-color: ${({theme}) => theme.colors.primary.replace('1)', '0.7)'/*add transparent*/)};
 `;
