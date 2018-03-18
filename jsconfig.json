@@ -4,19 +4,13 @@
     "baseUrl": "./src",
     "jsx": "react",
     "paths": {
-      "actions": ["./state/actions"],
       "assets": ["./assets"],
       "components": ["./components"],
-      "constants": ["./constants"],
-      "containers": ["./containers"],
-      "reducers": ["./state/reducers"],
-      "services": ["./services"],
-      "sources": ["./sources"],
-      "styles": ["./styles"],
-      "utils": ["./utils"]
+      "reference": ["./reference"],
+      "service": ["./service"],
+      "ui": ["./ui"],
+      "workflow": ["./workflow"]
     }
   },
-  "exclude": [
-      "node_modules", "build"
-  ]
+  "exclude": ["node_modules", "build"]
 }
