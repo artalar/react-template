@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { network } from 'services';
-import { ROOT_API_URL } from 'constants/urls';
+import { network } from 'service';
+import { ROOT_API_URL } from 'reference/urls';
 
 export default {
   registerUser(email, password) {

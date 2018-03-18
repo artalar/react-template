@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-import { errorAuthentification } from 'actions';
-import { ROOT_API_URL } from 'constants/urls';
+import { ROOT_API_URL } from 'reference/urls';
 
 const network = axios.create({
   ROOT_API_URL,
@@ -14,8 +13,8 @@ network.interceptors.request.use(config => {
 });
 
 network.interceptors.response.use(undefined, error => {
-  const resp = error.response;
-  if (resp.status === 401) setTimeout(() => errorAuthentification(error.response));
+  /* const resp = error.response;
+  if (resp.status === 401) setTimeout(() => errorAuthentification(error.response)); */
   return Promise.reject(error);
 });
 
