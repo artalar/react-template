@@ -1,20 +1,31 @@
 import * as React from 'react';
 
 const shallowCompare = (newObj, oldObj) => {
-  const oldObjKeys = Object.keys(oldObj);
   const newObjKeys = Object.keys(newObj);
+  const oldObjKeys = Object.keys(oldObj);
   return (
-    oldObjKeys.length === newObjKeys.length &&
-    oldObjKeys.every(key => oldObjKeys[key] === newObjKeys[key])
+    newObjKeys.length === oldObjKeys.length && newObjKeys.every(key => newObj[key] === oldObj[key])
   );
 };
 
-export const contextFactory = (name, Component) => {
+export const contextFactory = (name, coach, goals) => {
+  const { state, subscribe, unsubscribe } = coach;
   const { Provider: ProviderBase, Consumer } = React.createContext(name);
 
-  class Provider extends Component {
+  class Provider extends React.Component {
+    state = state;
+    componentDidMount() {
+      subscribe(state => this.setState(state));
+    }
+
+    componentWillUnmount() {
+      unsubscribe(state => this.setState(state));
+    }
+
     render() {
-      return <ProviderBase value={this.state}>{this.props.children}</ProviderBase>;
+      return (
+        <ProviderBase value={{ ...goals, state: this.state }}>{this.props.children}</ProviderBase>
+      );
     }
   }
 
@@ -25,7 +36,7 @@ export const contextFactory = (name, Component) => {
     return (
       <Consumer>
         {value => {
-          const state = selector(value);
+          const state = selector(value, props);
           if (!updateFromParent && (state === cachedState || shallowCompare(state, cachedState))) {
             updateFromParent = false;
             return cacheComponent;

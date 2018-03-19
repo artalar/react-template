@@ -1,3 +1,4 @@
-export { default as api } from './api';
-export { default as network } from './network';
+export { network } from './network';
 export { default as themeSC } from './themeSC';
+export { Private } from './Private';
+export { contextFactory } from './contextFactory';

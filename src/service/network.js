@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { ROOT_API_URL } from 'reference/urls';
 
-const network = axios.create({
+export const network = axios.create({
   ROOT_API_URL,
 });
 
@@ -17,5 +17,3 @@ network.interceptors.response.use(undefined, error => {
   if (resp.status === 401) setTimeout(() => errorAuthentification(error.response)); */
   return Promise.reject(error);
 });
-
-export default network;
