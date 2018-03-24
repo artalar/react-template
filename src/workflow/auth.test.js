@@ -1,4 +1,4 @@
-import { withMeta } from '../coach-stm/middleware';
+import { withMeta } from 'coach-stm/middleware';
 import { getMe } from './auth';
 
 describe('тестирование авторизации', () => {

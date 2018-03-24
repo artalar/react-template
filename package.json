@@ -4,7 +4,7 @@
   "private": false,
   "dependencies": {
     "axios": "^0.18.0",
-    "coach-stm": "^2.0.0-alpha9",
+    "coach-stm": "^2.0.0-beta1",
     "normalize.css": "^8.0.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.0-alpha.2",
@@ -32,6 +32,9 @@
     "react-app-rewired": "^1.5.0"
   },
   "jest": {
-    "moduleDirectories": ["node_modules", "src"]
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ]
   }
 }

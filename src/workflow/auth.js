@@ -1,5 +1,5 @@
-import { Coach, indent } from '../coach-stm';
-import middleware, { ifError, Store, withMeta } from '../coach-stm/middleware';
+import { Coach, indent } from 'coach-stm';
+import middleware, { ifError, Store, withMeta } from 'coach-stm/middleware';
 
 import { STATUS } from 'reference';
 import { contextFactory } from 'service/contextFactory';
