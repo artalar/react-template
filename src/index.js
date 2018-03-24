@@ -5,8 +5,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { Switch, Route, Redirect } from 'react-router';
 import 'normalize.css';
 
-import { themeSC, Private } from 'service';
+import { themeSC } from 'service';
 import { Provider as AuthProvider } from 'workflow/auth';
+import { Private } from 'workflow/auth/Private';
 import { Initialize } from 'components/Initialize';
 import { App } from 'components/App';
 import { Auth } from 'components/Auth';

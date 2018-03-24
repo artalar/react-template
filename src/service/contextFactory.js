@@ -15,12 +15,14 @@ export const contextFactory = (name, coach, goals) => {
   class Provider extends React.Component {
     state = state;
     componentDidMount() {
-      subscribe(state => this.setState(state));
+      subscribe(this.subscribtion);
     }
 
     componentWillUnmount() {
-      unsubscribe(state => this.setState(state));
+      unsubscribe(this.subscribtion);
     }
+
+    subscribtion = state => this.setState(state);
 
     render() {
       return (

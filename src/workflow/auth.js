@@ -1,39 +1,43 @@
-import { Coach } from '../coach-stm';
-import middleware, { ifError } from '../coach-stm/middleware';
+import { Coach, indent } from '../coach-stm';
+import middleware, { ifError, Store, withMeta } from '../coach-stm/middleware';
 
 import { STATUS } from 'reference';
 import { contextFactory } from 'service/contextFactory';
 import { isEmail, isPassword } from 'service/validator';
-import { getMe as fetchGetMe, authUser as fetchAuthUser } from 'service/api';
+import * as api from 'service/api';
 
-const coach = new Coach({
-  middleware: middleware,
-  state: {
-    permissions: [],
-    status: STATUS.INITIAL,
-    errorMsg: null,
-  },
+const store = new Store({
+  permissions: [],
+  status: STATUS.INITIAL,
+  errorMsg: null,
 });
 
-// Prepare
+const setStatusLoading = indent((p, { store }) => store.merge({ status: STATUS.LOADING }));
 
-const setStatusLoading = coach.offerState({ status: STATUS.LOADING });
-
-const setStatusLoaded = coach.offerState({ status: STATUS.LOADED });
+const setStatusLoaded = indent((p, { store }) => store.merge({ status: STATUS.LOADED }));
 
 const selectPermissions = ({ data: { permissions } }) => ({ permissions });
 
-const setPermissions = coach.setState;
+const setPermissions = indent((p, { store }) => store.merge(p));
 
-const setError = error => coach.setState({ status: STATUS.ERROR, errorMsg: error.message });
+const fetchGetMe = async (p, { api }) => await api.getMe(p);
 
-// Env
+const fetchAuthUser = async (p, { api }) => await api.authUser(p);
 
-coach.middleware.unshift(ifError(setError));
+const setError = error => store.merge({ status: STATUS.ERROR, errorMsg: error.message });
+
+const coach = new Coach({
+  middleware: {
+    store: withMeta({ store }),
+    api: withMeta({ api }),
+    error: ifError(setError),
+    ...middleware,
+  },
+});
 
 // Logic
 
-const getMe = coach.goal('fetch user info', {
+export const getMe = coach.goal('fetch user info', {
   setStatusLoading,
   fetchGetMe,
   selectPermissions,
@@ -41,9 +45,9 @@ const getMe = coach.goal('fetch user info', {
   setStatusLoaded,
 });
 
-const formValid = coach.goal({ isEmail, isPassword });
+export const formValid = coach.goal({ isEmail, isPassword });
 
-const authUser = coach.goal('authentificate user', {
+export const authUser = coach.goal('authentificate user', {
   formValid,
   setStatusLoading,
   fetchAuthUser,
@@ -52,7 +56,7 @@ const authUser = coach.goal('authentificate user', {
   setStatusLoaded,
 });
 
-export const { connect, Provider } = contextFactory('auth', coach, {
+export const { connect, Provider } = contextFactory('auth', store, {
   getMe,
   authUser,
 });

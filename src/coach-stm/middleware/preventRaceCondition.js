@@ -1,6 +1,8 @@
 const workingTasks = new Map();
 
-export const rejectedByRaceCondition = new Error("rejected by race condition");
+export class RejectedByRaceCondition extends Error {
+  message = 'rejected by race condition';
+}
 
 export const preventRaceCondition = async (payload, meta, task) => {
   const { instanceId, taskIndex, processId } = meta;
@@ -8,7 +10,7 @@ export const preventRaceCondition = async (payload, meta, task) => {
     workingTasks.set(instanceId, processId);
   }
   if (workingTasks.get(instanceId) !== processId) {
-    throw rejectedByRaceCondition;
+    throw new RejectedByRaceCondition();
   }
   return await task(payload, meta);
 };

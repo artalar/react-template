@@ -19,102 +19,47 @@ const executor = async ({ description, tasks, tasksNames, instanceId, payload, p
 
 const compose = (theMiddleware, task) => (payload, meta) => theMiddleware(payload, meta, task);
 
-export const missedProperty = new Error('property missed');
+const withMiddleware = middleware => task =>
+  Object.values(middleware).reduceRight((acc, theMiddleware) => compose(theMiddleware, acc), task);
 
-const mergeRecursive = (object, history, payload) => {
-  if (history.length === 0) {
-    return { ...object, ...payload };
-  }
-  const nextKey = history.shift();
-  return { ...object, [nextKey]: mergeRecursive(object[nextKey], history, payload) };
+const createGoal = goalSettings => {
+  const { description, tasks, tasksNames, middleware } = goalSettings;
+  const tasksWithMiddleware = tasks.map(withMiddleware(middleware));
+
+  const instanceId = Symbol();
+
+  const goal = payload =>
+    executor({
+      description,
+      tasks: tasksWithMiddleware,
+      tasksNames,
+      instanceId,
+      payload,
+      processId: Symbol(),
+    });
+
+  goal.middleware = Object.freeze(middleware);
+  goal.replaceMiddleware = (middleware = {}) => createGoal({ ...goalSettings, middleware });
+
+  return goal;
 };
 
-const getSetter = (object, history, updateState) => {
-  return Object.keys(object).reduce((acc, key) => {
-    return Object.defineProperty(acc, key, {
-      get: function() {
-        const value = object[key];
-        if (typeof value === 'object' && value !== null) {
-          return getSetter(value, history.concat(key), updateState);
-        } else {
-          throw missedProperty;
-        }
-      },
-    });
-  }, updateState(history));
+export const indent = callback => async (payload, meta) => {
+  await callback(payload, meta);
+  return payload;
 };
 
 export class Coach {
-  constructor({ state = {}, middleware = [] } = {}) {
-    this.subscriptions = [];
-    this.state = state;
-    this.middleware = middleware;
-  }
-
-  get offerState() {
-    return getSetter(this.state, [], history => updater => payload => {
-      this.updateState(history)(updater);
-      return payload;
+  constructor({ middleware = {} } = {}) {
+    Object.defineProperty(this, 'middleware', {
+      value: Object.freeze(middleware),
+      configurable: false,
+      enumerable: false,
+      writable: false,
     });
   }
 
-  setState = state => {
-    this.state = { ...this.state, ...state };
-    this.subscriptions.forEach(callback => callback(this.state));
-  };
-
-  updateState = history => payload => {
-    const newState = mergeRecursive(this.state, history, payload);
-    if (this.state !== newState) this.subscriptions.forEach(callback => callback(newState));
-
-    return (this.state = newState);
-  };
-
-  subscribe = callback => {
-    this.subscriptions.push(callback);
-  };
-  unsubscribe = deletingCallback => {
-    this.subscriptions = this.subscriptions.filter(callback => callback !== deletingCallback);
-  };
-
-  indent(callback) {
-    return (payload, meta) => {
-      callback(payload, meta);
-      return payload;
-    };
-  }
-
-  withMiddleware(middleware) {
-    return task =>
-      middleware.reduceRight((acc, theMiddleware) => {
-        const f = compose(theMiddleware, acc);
-        f._cStmTaskName = task._cStmTaskName || task.name;
-        return f;
-      }, task);
-  }
-
-  newGoal = ({ middleware, description, tasks, tasksNames }) => {
-    tasks = tasks.map(this.withMiddleware(middleware));
-
-    const instanceId = Symbol();
-
-    const goal = payload =>
-      executor({
-        description,
-        tasks,
-        tasksNames,
-        instanceId,
-        payload,
-        processId: Symbol(),
-      });
-
-    goal.withMiddleware = middleware =>
-      this.newGoal({ middleware, description, tasks, tasksNames });
-
-    return goal;
-  };
-
-  goal(description, tasks = { indent: this.indent }) {
+  goal(description, tasks = { indent: indent }) {
     // description not specified
     if (typeof description === 'object') {
       tasks = description;
@@ -122,12 +67,16 @@ export class Coach {
     }
 
     const tasksNames = [];
-
     tasks = Object.keys(tasks).map(key => {
       tasksNames.push(key);
-      return this.withMiddleware(this.middleware)(tasks[key]);
+      return tasks[key];
     });
 
-    return this.newGoal({ middleware: [], description, tasks, tasksNames });
+    return createGoal({
+      description,
+      tasks,
+      tasksNames,
+      middleware: this.middleware,
+    });
   }
 }
