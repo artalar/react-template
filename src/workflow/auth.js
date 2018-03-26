@@ -1,9 +1,10 @@
 import { Coach, indent } from 'coach-stm';
-import middleware, { ifError, Store, withMeta } from 'coach-stm/middleware';
+import middleware, { ifError, withMeta } from 'coach-stm/es/middleware';
 
 import { STATUS } from 'reference';
 import { contextFactory } from 'service/contextFactory';
 import { isEmail, isPassword } from 'service/validator';
+import { Store } from 'service/store';
 import * as api from 'service/api';
 
 const store = new Store({
@@ -47,7 +48,7 @@ export const getMe = coach.goal('fetch user info', {
 
 export const formValid = coach.goal({ isEmail, isPassword });
 
-export const authUser = coach.goal('authentificate user', {
+export const authUser = coach.goal('authenticate user', {
   formValid,
   setStatusLoading,
   fetchAuthUser,
@@ -56,7 +57,7 @@ export const authUser = coach.goal('authentificate user', {
   setStatusLoaded,
 });
 
-export const { connect, Provider } = contextFactory('auth', store, {
+export const { connect, Provider: AuthProvider } = contextFactory('auth', store, {
   getMe,
   authUser,
 });

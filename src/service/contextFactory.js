@@ -8,25 +8,25 @@ const shallowCompare = (newObj, oldObj) => {
   );
 };
 
-export const contextFactory = (name, coach, goals) => {
-  const { state, subscribe, unsubscribe } = coach;
+export const contextFactory = (name, store, work) => {
+  const { state, subscribe, unsubscribe } = store;
   const { Provider: ProviderBase, Consumer } = React.createContext(name);
 
   class Provider extends React.Component {
     state = state;
     componentDidMount() {
-      subscribe(this.subscribtion);
+      subscribe(this.subscription);
     }
 
     componentWillUnmount() {
-      unsubscribe(this.subscribtion);
+      unsubscribe(this.subscription);
     }
 
-    subscribtion = state => this.setState(state);
+    subscription = state => this.setState(state);
 
     render() {
       return (
-        <ProviderBase value={{ ...goals, state: this.state }}>{this.props.children}</ProviderBase>
+        <ProviderBase value={{ work, state: this.state }}>{this.props.children}</ProviderBase>
       );
     }
   }

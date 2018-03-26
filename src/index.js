@@ -6,37 +6,33 @@ import { Switch, Route, Redirect } from 'react-router';
 import 'normalize.css';
 
 import { themeSC } from 'service';
-import { Provider as AuthProvider } from 'workflow/auth';
+import { AuthProvider } from 'workflow/auth';
 import { Private } from 'workflow/auth/Private';
 import { Initialize } from 'components/Initialize';
 import { App } from 'components/App';
 import { Auth } from 'components/Auth';
 
-class Root extends React.Component {
-  render() {
-    return (
-      <ThemeProvider theme={themeSC}>
-        <AuthProvider>
-          <Initialize>
-            <BrowserRouter basename="/">
-              <Switch>
-                <Route path="/auth" component={Auth} />
-                <Route>
-                  <Private
-                    to={['admin', 'user']}
-                    any={true}
-                    fallback={() => <Redirect to="/auth" />}
-                  >
-                    <App />
-                  </Private>
-                </Route>
-              </Switch>
-            </BrowserRouter>
-          </Initialize>
-        </AuthProvider>
-      </ThemeProvider>
-    );
-  }
-}
+const Providers = ({ children }) => (
+  <ThemeProvider theme={themeSC}>
+    <BrowserRouter basename="/">
+      <AuthProvider>{children}</AuthProvider>
+    </BrowserRouter>
+  </ThemeProvider>
+);
+
+const Root = () => (
+  <Providers>
+    <Initialize>
+      <Switch>
+        <Route path="/auth" component={Auth} />
+        <Route>
+          <Private to={['admin', 'user']} fallback={() => <Redirect to="/auth" />}>
+            <App />
+          </Private>
+        </Route>
+      </Switch>
+    </Initialize>
+  </Providers>
+);
 
 ReactDOM.render(<Root />, document.getElementById('root'));
