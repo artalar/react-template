@@ -1,5 +1,5 @@
-import { withMeta } from 'coach-stm/middleware';
-import { getMe } from './auth';
+import { withMeta } from 'coach-stm/es/middleware';
+import { getMe } from './workflow';
 
 describe('тестирование авторизации', () => {
   const testData = { data: { permissions: ['test'] } };

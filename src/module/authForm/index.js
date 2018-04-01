@@ -9,13 +9,13 @@ const Container = styled.main`
   display: flex;
 `;
 
-export class AuthRaw extends React.Component {
+export class AuthFormRaw extends React.Component {
   render() {
     return (
         [<Header>react-template</Header>,
-        <Container>Auth</Container>]
+        <Container>AuthForm</Container>]
     );
   }
 }
 
-export const Auth = AuthRaw;
+export const AuthForm = AuthFormRaw;

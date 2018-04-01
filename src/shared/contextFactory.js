@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { createSubscription } from 'create-subscription';
 
 const shallowCompare = (newObj, oldObj) => {
   const newObjKeys = Object.keys(newObj);
@@ -8,28 +9,24 @@ const shallowCompare = (newObj, oldObj) => {
   );
 };
 
-export const contextFactory = (name, store, work) => {
-  const { state, subscribe, unsubscribe } = store;
-  const { Provider: ProviderBase, Consumer } = React.createContext(name);
+export const contextFactory = (store, work) => {
+  const { Provider: ProviderBase, Consumer } = React.createContext(store.state);
 
-  class Provider extends React.Component {
-    state = state;
-    componentDidMount() {
-      subscribe(this.subscription);
-    }
+  const Subscription = createSubscription({
+    getCurrentValue: ({ state }) => {
+      return { work, state };
+    },
+    subscribe: (store, callback) => {
+      store.subscribe(state => callback({ work, state }));
+      return () => store.unsubscribe(callback);
+    },
+  });
 
-    componentWillUnmount() {
-      unsubscribe(this.subscription);
-    }
-
-    subscription = state => this.setState(state);
-
-    render() {
-      return (
-        <ProviderBase value={{ work, state: this.state }}>{this.props.children}</ProviderBase>
-      );
-    }
-  }
+  const Provider = ({ children }) => (
+    <Subscription source={store}>
+      {value => <ProviderBase value={value}>{children}</ProviderBase>}
+    </Subscription>
+  );
 
   const connect = selector => target => ({ children, ...props }) => {
     let updateFromParent = true;

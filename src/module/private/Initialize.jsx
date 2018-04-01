@@ -1,8 +1,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
-import { connect } from 'workflow/auth';
-import { STATUS } from 'reference';
+import { connectAuth } from './workflow';
+import { STATUS } from 'shared/reference';
 
 export class InitializeRaw extends React.PureComponent {
   static = {
@@ -15,10 +15,11 @@ export class InitializeRaw extends React.PureComponent {
   }
   render() {
     const { status } = this.props;
+    // TODO: add loading animation
     if (status === STATUS.INITIAL || status === STATUS.LOADING) return <span>Loading...</span>;
     return this.props.children;
   }
 }
-export const Initialize = connect(({ work: { getMe }, state: { status } }) => ({ getMe, status }))(
+export const Initialize = connectAuth(({ work: { getMe }, state: { status } }) => ({ getMe, status }))(
   InitializeRaw
 );

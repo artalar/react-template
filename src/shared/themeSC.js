@@ -1,4 +1,4 @@
-export default {
+export const themeSC = { // FIXME: rewrite me
   colors: {
     primary: 'rgba(33, 150, 243, 1)',
     secondary: 'rgba(0, 188, 212, 1)'

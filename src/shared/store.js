@@ -1,20 +1,20 @@
 export class Store {
   constructor(initialState = {}) {
     this.state = initialState;
-    this.subscriptions = [];
+    let subscriptions = [];
 
     this.merge = updates => {
       const state = this.state = { ...this.state, ...updates };
-      this.subscriptions.forEach(callback => callback(state));
+      subscriptions.forEach(callback => callback(state));
       return state;
     };
 
     this.subscribe = callback => {
-      this.subscriptions.push(callback);
+      subscriptions.push(callback);
     };
 
     this.unsubscribe = deleteCallback => {
-      this.subscriptions = this.subscriptions.filter(
+      subscriptions = subscriptions.filter(
         callback => callback !== deleteCallback
       );
     };

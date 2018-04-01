@@ -9,13 +9,13 @@ const Container = styled.main`
   display: flex;
 `;
 
-export class AppRaw extends React.Component {
+export class MainRaw extends React.Component {
   render() {
     return (
         [<Header>react-template</Header>,
-        <Container>App</Container>]
+        <Container>Main</Container>]
     );
   }
 }
 
-export const App = AppRaw;
+export const Main = MainRaw;

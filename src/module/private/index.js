@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
-import { connect } from 'workflow/auth';
+import { connectAuth } from './workflow';
 
 export class PrivateRaw extends React.Component {
   static propTypes = {
@@ -29,6 +29,6 @@ export class PrivateRaw extends React.Component {
   }
 }
 
-export const Private = connect(({ state: { permissions = [] } = {} }) => ({ permissions }))(
+export const Private = connectAuth(({ state: { permissions = [] } = {} }) => ({ permissions }))(
   PrivateRaw
 );
