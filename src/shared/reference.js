@@ -14,3 +14,11 @@ export const STATUS = {
   LOADED: 'LOADED',
   ERROR: 'ERROR',
 };
+
+export const PERMISSIONS = {
+  ADMIN: 'admin',
+  USER: 'user',
+  getAll() {
+    return Object.values(this);
+  },
+};

@@ -5,7 +5,7 @@ import { Router } from 'react-router-dom';
 import { Switch, Route, Redirect } from 'react-router';
 import 'normalize.css';
 
-import { PATH } from 'shared/reference';
+import { PATH, PERMISSIONS } from 'shared/reference';
 import { history } from 'shared/browserHistory';
 import { themeSC } from 'shared/themeSC';
 import { ProviderAuth } from 'module/private/workflow';
@@ -29,7 +29,7 @@ const Root = () => (
         <Switch>
           <Route path={PATH.AUTH} component={AuthForm} />
           <Route>
-            <Private to={['admin', 'user']} fallback={() => <Redirect to={PATH.AUTH} push />}>
+            <Private to={PERMISSIONS.getAll()} fallback={() => <Redirect to={PATH.AUTH} push />}>
               <Main />
             </Private>
           </Route>
