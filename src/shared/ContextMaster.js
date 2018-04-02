@@ -30,18 +30,23 @@ contextConnectors.prototype = Object.keys(CONTEXT).reduce((acc, contextName) => 
   return acc;
 }, {});
 
-export const addContext = coach.goal('add provider', [
-  ({ name, store, workflow }, { store: ownStore }) => {
-    const { connect, Provider } = contextFactory(store, workflow);
+const createContext = ({ name, store, workflow }) => ({ name, ...contextFactory(store, workflow) });
 
-    ownStore.merge({ providers: { ...ownStore.state.providers, [name]: { connect, Provider } } });
-    Object.assign(contextConnectors, {
-      get [name]() {
-        return allContextStore.state.providers[name].connect;
-      },
-    });
-  },
-]);
+const setNewContextProvider = ({ name, connect, Provider }, { store }) =>
+  void store.merge({ providers: { ...store.state.providers, [name]: { connect, Provider } } });
+
+const setNewContextConnect = ({ name }) =>
+  Object.assign(contextConnectors, {
+    get [name]() {
+      return allContextStore.state.providers[name].connect;
+    },
+  });
+
+export const addContext = coach.goal('add provider', {
+  createContext,
+  setNewContextProvider,
+  setNewContextConnect,
+});
 
 export const ContextMaster = ({ children }) => {
   const { providers } = allContextStore.state;
