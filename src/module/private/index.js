@@ -1,7 +1,10 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
-import { connectAuth } from './workflow';
+import { CONTEXT } from 'shared/reference';
+import { contextConnectors } from 'shared/ContextMaster';
+// trigger adding provider
+import './workflow';
 
 export class PrivateRaw extends React.Component {
   static propTypes = {
@@ -29,6 +32,6 @@ export class PrivateRaw extends React.Component {
   }
 }
 
-export const Private = connectAuth(({ state: { permissions = [] } = {} }) => ({ permissions }))(
-  PrivateRaw
-);
+export const Private = contextConnectors[CONTEXT.PRIVATE](
+  ({ state: { permissions = [] } = {} }) => ({ permissions })
+)(PrivateRaw);

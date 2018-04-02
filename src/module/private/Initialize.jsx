@@ -1,8 +1,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
-import { connectAuth } from './workflow';
-import { STATUS } from 'shared/reference';
+import { STATUS, CONTEXT } from 'shared/reference';
+import { contextConnectors } from 'shared/ContextMaster';
 
 export class InitializeRaw extends React.PureComponent {
   static = {
@@ -20,6 +20,6 @@ export class InitializeRaw extends React.PureComponent {
     return this.props.children;
   }
 }
-export const Initialize = connectAuth(({ work: { getMe }, state: { status } }) => ({ getMe, status }))(
-  InitializeRaw
-);
+export const Initialize = contextConnectors[CONTEXT.PRIVATE](
+  ({ workflow: { getMe }, state: { status } }) => ({ getMe, status })
+)(InitializeRaw);

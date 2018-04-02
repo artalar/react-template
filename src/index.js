@@ -8,7 +8,7 @@ import 'normalize.css';
 import { PATH, PERMISSIONS } from 'shared/reference';
 import { history } from 'shared/browserHistory';
 import { themeSC } from 'shared/themeSC';
-import { ProviderAuth } from 'module/private/workflow';
+import { ContextMaster } from 'shared/ContextMaster';
 import { Private } from 'module/private';
 import { Initialize } from 'module/private/Initialize';
 import { AuthForm } from 'module/authForm';
@@ -17,7 +17,7 @@ import { Main } from 'module/main';
 const Providers = ({ children }) => (
   <Router history={history}>
     <ThemeProvider theme={themeSC}>
-      <ProviderAuth>{children}</ProviderAuth>
+      <ContextMaster>{children}</ContextMaster>
     </ThemeProvider>
   </Router>
 );
@@ -25,7 +25,8 @@ const Providers = ({ children }) => (
 const Root = () => (
   <Providers>
     <Initialize>
-      <Router history={history}>{/* FIXME: Switch not update context without it =\ */}
+      <Router history={history}>
+        {/* FIXME: Switch not update context without it =\ */}
         <Switch>
           <Route path={PATH.AUTH} component={AuthForm} />
           <Route>

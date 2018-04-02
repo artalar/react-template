@@ -1,10 +1,10 @@
 import { Coach } from 'coach-stm';
 import middleware, { withMeta } from 'coach-stm/es/middleware';
 
-import { STATUS } from 'shared/reference';
-import { contextFactory } from 'shared/contextFactory';
+import { STATUS, CONTEXT } from 'shared/reference';
 import { Store } from 'shared/store';
 import { setStatusLoading, setStatusLoaded, onError } from 'shared/updaters';
+import { addContext } from 'shared/ContextMaster';
 import * as api from 'shared/api';
 
 const initialState = {
@@ -31,6 +31,8 @@ const selectPermissions = ({ data: { permissions } }) => ({ permissions });
 
 const fetchGetMe = async (p, { api }) => await api.getMe(p);
 
+// Goals
+
 export const updatePermissions = coach.goal({ selectPermissions, setPermissions });
 
 export const getMe = coach.goal(
@@ -48,6 +50,4 @@ export const logOut = coach.goal('log out', {
   setLogOut,
 });
 
-export const { connect: connectAuth, Provider: ProviderAuth } = contextFactory(store, {
-  getMe,
-});
+addContext({ name: CONTEXT.PRIVATE, store, workflow: { getMe } });

@@ -22,3 +22,7 @@ export const PERMISSIONS = {
     return Object.values(this);
   },
 };
+
+export const CONTEXT = {
+  PRIVATE: 'PRIVATE',
+};

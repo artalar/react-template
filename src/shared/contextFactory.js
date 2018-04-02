@@ -9,15 +9,18 @@ const shallowCompare = (newObj, oldObj) => {
   );
 };
 
-export const contextFactory = (store, work) => {
+export const contextFactory = (store, workflow) => {
   const { Provider: ProviderBase, Consumer } = React.createContext(store.state);
 
+  let cachedProviderValue = { workflow, state: store.state };
+
   const Subscription = createSubscription({
-    getCurrentValue: ({ state }) => {
-      return { work, state };
-    },
+    getCurrentValue: ({ state }) =>
+      cachedProviderValue.state === state ? cachedProviderValue : { workflow, state },
     subscribe: (store, callback) => {
-      store.subscribe(state => callback({ work, state }));
+      store.subscribe(state =>
+        callback(cachedProviderValue.state === state ? cachedProviderValue : { workflow, state })
+      );
       return () => store.unsubscribe(callback);
     },
   });
