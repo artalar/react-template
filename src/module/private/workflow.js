@@ -10,7 +10,7 @@ import * as api from 'shared/api';
 const initialState = {
   permissions: [],
   status: STATUS.INITIAL,
-  errorMsg: null,
+  error: null,
 };
 
 const store = new Store(initialState);

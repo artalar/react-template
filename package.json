@@ -4,7 +4,7 @@
   "private": false,
   "dependencies": {
     "axios": "^0.18.0",
-    "coach-stm": "^2.0.0-beta5",
+    "coach-stm": "^2.0.0-beta7",
     "create-subscription": "^0.1.0",
     "normalize.css": "^8.0.0",
     "prop-types": "^15.6.1",
