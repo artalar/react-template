@@ -5,13 +5,13 @@
   "dependencies": {
     "axios": "^0.18.0",
     "coach-stm": "^2.0.0-beta7",
-    "create-subscription": "^0.1.0",
+    "create-subscription": "^16.3.1",
     "normalize.css": "^8.0.0",
     "prop-types": "^15.6.1",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "^1.1.1",
+    "react-scripts": "^1.1.4",
     "styled-components": "^3.2.5"
   },
   "scripts": {
