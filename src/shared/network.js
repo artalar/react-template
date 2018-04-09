@@ -14,7 +14,7 @@ network.interceptors.request.use(config => {
 });
 
 network.interceptors.response.use(undefined, error => {
-  const resp = error.response;
-  if (resp.status === 401) setTimeout(logOut);
+  const { response: { status } = {} } = error || {};
+  if (status === 401) setTimeout(logOut);
   return Promise.reject(error);
 });

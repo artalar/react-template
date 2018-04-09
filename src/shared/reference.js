@@ -5,7 +5,7 @@ const URL_PREFIX = process.env.URL_PREFIX || '';
 export const PATH = {
   API: `${URL_PREFIX}/api`,
   AUTH: `${URL_PREFIX}/auth`,
-  HOME: URL_PREFIX,
+  HOME: `${URL_PREFIX}/`,
 };
 
 export const STATUS = {
@@ -19,7 +19,7 @@ export const PERMISSIONS = {
   ADMIN: 'admin',
   USER: 'user',
   getAll() {
-    return Object.values(this);
+    return Object.values(this).filter(value => typeof value === 'string');
   },
 };
 
