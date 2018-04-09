@@ -8,10 +8,9 @@ import 'normalize.css';
 import { PATH, PERMISSIONS } from 'shared/reference';
 import { history } from 'shared/browserHistory';
 import { themeSC } from 'shared/themeSC';
-import { ContextMaster } from 'shared/ContextMaster';
-import { Private } from 'module/private';
-import { Initialize } from 'module/private/Initialize';
-import { AuthForm } from 'module/authForm';
+import { ContextMaster } from 'shared/context-master';
+import { Initialize, Private } from 'module/private';
+import { AuthForm } from 'module/auth-form';
 import { Main } from 'module/main';
 
 const Providers = ({ children }) => (

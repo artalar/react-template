@@ -4,7 +4,7 @@ import middleware, { withMeta } from 'coach-stm/es/middleware';
 import { STATUS, CONTEXT } from 'shared/reference';
 import { Store } from 'shared/store';
 import { setStatusLoading, setStatusLoaded, onError } from 'shared/updaters';
-import { addContext } from 'shared/ContextMaster';
+import { addContext } from 'shared/context-master';
 import * as api from 'shared/api';
 
 const initialState = {

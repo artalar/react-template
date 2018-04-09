@@ -4,7 +4,7 @@ import middleware, { withMeta } from 'coach-stm/es/middleware';
 
 import { CONTEXT } from 'shared/reference';
 import { Store } from 'shared/store';
-import { contextFactory } from './ContextMaster/contextFactory';
+import { contextFactory } from './context-master/context-factory';
 
 const initialState = {
   providers: {},

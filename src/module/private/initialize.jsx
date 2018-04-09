@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 
 import { STATUS, CONTEXT } from 'shared/reference';
-import { contextConnectors } from 'shared/ContextMaster';
+import { contextConnectors } from 'shared/context-master';
 
 export class InitializeRaw extends React.PureComponent {
   static = {
