@@ -19,12 +19,12 @@ const coach = new Coach({
   },
 });
 
-export const contextConnectors = {};
+const contextConnectors = {};
 contextConnectors.prototype = Object.keys(CONTEXT).reduce((acc, contextName) => {
   Object.defineProperty(acc, contextName, {
     get() {
       console.error(new Error(`Context "${contextName}" is not set yet`));
-      return (/* selector */) => Component => Component;
+      return (/* selector */) => (/* Component */) => null;
     },
   });
   return acc;
@@ -42,13 +42,13 @@ const setNewContextConnect = ({ name }) =>
     },
   });
 
-export const addContext = coach.goal('add provider', {
+const addContext = coach.goal('add provider', {
   createContext,
   setNewContextProvider,
   setNewContextConnect,
 });
 
-export const ContextMaster = ({ children }) => {
+const ContextMaster = ({ children }) => {
   const { providers } = allContextStore.state;
   return Object.keys(providers).reduce(
     (master, providerName) =>
@@ -56,3 +56,5 @@ export const ContextMaster = ({ children }) => {
     children
   );
 };
+
+export { ContextMaster, addContext, contextConnectors };

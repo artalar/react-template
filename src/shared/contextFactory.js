@@ -9,7 +9,7 @@ const shallowCompare = (newObj, oldObj) => {
   );
 };
 
-export const contextFactory = (store, workflow) => {
+const contextFactory = (store, workflow) => {
   const { Provider: ProviderBase, Consumer } = React.createContext(store.state);
 
   let cachedProviderValue = { workflow, state: store.state };
@@ -57,3 +57,5 @@ export const contextFactory = (store, workflow) => {
     Provider,
   };
 };
+
+export { contextFactory };

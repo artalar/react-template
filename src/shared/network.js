@@ -3,7 +3,7 @@ import axios from 'axios';
 import { PATH } from 'shared/reference';
 import { logOut } from 'module/private/workflow';
 
-export const network = axios.create({
+const network = axios.create({
   baseURL: PATH.API,
 });
 
@@ -18,3 +18,5 @@ network.interceptors.response.use(undefined, error => {
   if (status === 401) setTimeout(logOut);
   return Promise.reject(error);
 });
+
+export { network };
