@@ -3,8 +3,8 @@ import { Coach } from 'coach-stm/lib';
 import middleware, { withMeta } from 'coach-stm/es/middleware';
 
 import { CONTEXT } from 'shared/reference';
-import { contextFactory } from 'shared/contextFactory';
 import { Store } from 'shared/store';
+import { contextFactory } from './ContextMaster/contextFactory';
 
 const initialState = {
   providers: {},
@@ -33,7 +33,7 @@ contextConnectors.prototype = Object.keys(CONTEXT).reduce((acc, contextName) => 
 const createContext = ({ name, store, workflow }) => ({ name, ...contextFactory(store, workflow) });
 
 const setNewContextProvider = ({ name, connect, Provider }, { store }) =>
-  void store.merge({ providers: { ...store.state.providers, [name]: { connect, Provider } } });
+  void store.mergeForce({ providers: { ...store.state.providers, [name]: { connect, Provider } } });
 
 const setNewContextConnect = ({ name }) =>
   Object.assign(contextConnectors, {
