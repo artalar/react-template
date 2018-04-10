@@ -1,14 +1,14 @@
 import { Coach } from 'coach-stm';
 import middleware, { withMeta } from 'coach-stm/es/middleware';
 
-import { updatePermissions } from 'module/private/workflow';
-import { PATH, STATUS } from 'shared/reference';
-import { contextFactory } from 'shared/contextFactory';
-import { history } from 'shared/browserHistory';
+import { STATUS, CONTEXT, PATH } from 'shared/reference';
 import { Store } from 'shared/store';
 import { setStatusLoading, setStatusLoaded, onError } from 'shared/updaters';
+import { history } from 'shared/browserHistory';
+import { addContext } from 'shared/context-master';
 import { isEmail, isPassword } from 'shared/validator';
-import * as api from 'shared/api';
+import * as api from './api';
+import { updatePermissions } from 'module/private/workflow';
 
 const initialState = {
   status: STATUS.INITIAL,
@@ -29,7 +29,16 @@ const successRedirect = () => history.push(PATH.HOME);
 
 const fetchAuthUser = async (p, { api }) => await api.authUser(p);
 
-export const formValid = coach.goal({ isEmail, isPassword });
+const setClearError = (p, { store }) => void store.merge({ error: null });
+
+// Goals
+
+export const clearError = coach.goal({ setClearError });
+
+export const formValid = coach.goal({
+  isEmail: ({ email }) => void isEmail(email),
+  isPassword: ({ password }) => void isPassword(password),
+});
 
 export const authUser = coach.goal(
   'authenticate user',
@@ -44,8 +53,4 @@ export const authUser = coach.goal(
   onError
 );
 
-// TODO: registration
-
-export const { connect: connectAuthForm, Provider: ProviderAuthForm } = contextFactory(store, {
-  authUser,
-});
+addContext({ name: CONTEXT.AUTH, store, workflow: { authUser, clearError } });

@@ -25,4 +25,5 @@ export const PERMISSIONS = {
 
 export const CONTEXT = {
   PRIVATE: 'PRIVATE',
+  AUTH: 'AUTH',
 };
