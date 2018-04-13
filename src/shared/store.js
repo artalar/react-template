@@ -32,7 +32,9 @@ export class Store {
     };
 
     this.unsubscribe = deleteCallback => {
+      const oldLength = subscriptions.length;
       subscriptions = subscriptions.filter(callback => callback !== deleteCallback);
+      return oldLength !== subscriptions.length;
     };
   }
 }
