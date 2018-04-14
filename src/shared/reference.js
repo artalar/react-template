@@ -9,21 +9,23 @@ export const PATH = {
 };
 
 export const STATUS = {
-  INITIAL: 'INITIAL',
-  LOADING: 'LOADING',
-  LOADED: 'LOADED',
-  ERROR: 'ERROR',
+  INITIAL: 'initial',
+  LOADING: 'loading',
+  LOADED: 'loaded',
+  ERROR: 'error',
 };
 
+let ALL_PERMISSION;
 export const PERMISSIONS = {
   ADMIN: 'admin',
   USER: 'user',
   getAll() {
-    return Object.values(this).filter(value => typeof value === 'string');
+    // exclude method
+    return ALL_PERMISSION || (ALL_PERMISSION = Object.values(this).filter(value => typeof value === 'string'));
   },
 };
 
 export const CONTEXT = {
-  PRIVATE: 'PRIVATE',
-  AUTH: 'AUTH',
+  PRIVATE: 'private',
+  AUTH: 'auth',
 };
