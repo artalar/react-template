@@ -12,20 +12,23 @@ import applicationReducers from 'reducers';
 export default () => {
   const reducers = combineReducers({ app: applicationReducers, router: routerReducer });
   const history = createBrowserHistory();
-  const logger = createLogger({
-    collapsed: true,
-  });
 
-  const middleware = applyMiddleware(
-    asyncActionsCallerMiddleware,
-    routerMiddleware(history),
-    process.env.NODE_ENV === 'development' ? logger : undefined
-  );
+  const middlewares = [asyncActionsCallerMiddleware, routerMiddleware(history)];
+
+  if (process.env.NODE_ENV === 'development') {
+      middlewares.push(createLogger({ collapsed: true }));
+  }
+
+  let middleware = applyMiddleware(...middlewares);
+
+  if (process.env.NODE_ENV === 'development') {
+    middleware = composeWithDevTools(middleware);
+  }
 
   const store = createStore(
     reducers,
     {}, // preloadedState
-    process.env.NODE_ENV === 'development' ? composeWithDevTools(middleware) : middleware
+    middleware,
   );
   assignAll(actions, store);
   return { history, store };
